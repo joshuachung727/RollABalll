@@ -4,10 +4,13 @@ using UnityEngine.UI;
 using UnityEngine;
 
 public class PlayerMoveControl : MonoBehaviour {
-
+	public float slowValue=6f;
     public float speed;
+	public float thrustSpeed=2.5f;
     public Text countText;
+
 	public bool big=true;
+	public Text winText;
 	public float ballScale = 1;
     private Rigidbody rb;
     private int count;
@@ -19,7 +22,8 @@ public class PlayerMoveControl : MonoBehaviour {
 		vec *= ballScale;
         rb = GetComponent<Rigidbody>();
         count = 0;
-        countText.text = "Count: " + count;
+		winText.text = "";
+		SetCountText ();
     }
 
     void FixedUpdate()
@@ -27,17 +31,31 @@ public class PlayerMoveControl : MonoBehaviour {
 		if (big) {
 			transform.localScale += vec*Time.deltaTime;
 		}
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
-        if (Input.GetKeyDown("space"))
-            rb.AddForce(Vector3.up*speed/10,ForceMode.Impulse);
+      
+		if (Input.GetKey ("space")) {
+			rb.AddForce (Vector3.up * thrustSpeed, ForceMode.Impulse);
+		}
 
-        if (Input.GetKeyDown("m"))
-            rb.AddForce(-Vector3.up * speed / 5, ForceMode.Impulse);
+        if (Input.GetKey("z"))
+			rb.AddForce(-Vector3.up * thrustSpeed, ForceMode.Impulse);
 
+		if (rb.velocity != Vector3.zero) {
+			rb.velocity *= 1 - slowValue / 100;
+		}
+		if (Input.GetKey (KeyCode.LeftShift)) {
+			speed = 40;
+		} else {
+			speed = 20;
+		}
+
+
+
+		float moveHorizontal = Input.GetAxis("Horizontal");
+		float moveVertical = Input.GetAxis("Vertical");
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-
         rb.AddForce(movement * speed);
+
+
     }
 
 
@@ -46,9 +64,15 @@ public class PlayerMoveControl : MonoBehaviour {
         if (other.gameObject.CompareTag ( "pickUps"))
         {
             count++;
-            countText.text = "Count: " + count;
+			SetCountText ();
             other.gameObject.SetActive(false);
 
         }
     }
+	void SetCountText(){
+		countText.text = "Count: " + count;
+		if (count >= 12) {
+			winText.text = "You Win!";
+		}
+	}
 }
