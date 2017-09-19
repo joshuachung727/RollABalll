@@ -5,16 +5,23 @@ using UnityEngine;
 public class PlayerMoveControl : MonoBehaviour {
 
     public float speed;
-
+	public bool big=true;
+	public float ballScale = 1;
     private Rigidbody rb;
-
+	Vector3 vec;
+	
     void Start()
     {
+		vec = new Vector3 (1,1,1);
+		vec *= ballScale;
         rb = GetComponent<Rigidbody>();
     }
 
     void FixedUpdate()
     {
+		if (big) {
+			transform.localScale += vec*Time.deltaTime;
+		}
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
         if (Input.GetKeyDown("space"))
