@@ -22,7 +22,7 @@ public class ThirdPersonCameraControl : MonoBehaviour {
 		transform.position = player.transform.position;
 		yaw += speedH * Input.GetAxis ("Mouse X");
 		pitch -= speedV * Input.GetAxis ("Mouse Y");
-		print (yaw);
+		
 		transform.position = player.transform.position + offset;
 		transform.eulerAngles = new Vector3 (pitch, yaw, 0f);
 	}
