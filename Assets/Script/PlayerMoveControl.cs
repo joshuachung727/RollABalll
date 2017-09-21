@@ -10,11 +10,15 @@ public class PlayerMoveControl : MonoBehaviour {
     public Text countText;
     public GameObject Camera;
 
+
 	public bool big=true;
 	public Text winText;
 	public float ballScale = 1;
+
+  
     private Rigidbody rb;
     private int count;
+  
 	Vector3 vec;
     private float speed;
     void Start()
@@ -26,6 +30,8 @@ public class PlayerMoveControl : MonoBehaviour {
         count = 0;
 		winText.text = "";
 		SetCountText ();
+        
+
     }
 
     void FixedUpdate()
@@ -49,6 +55,8 @@ public class PlayerMoveControl : MonoBehaviour {
 		} else {
 			speed = Initialspeed;
 		}
+
+       
 
         
 
@@ -75,6 +83,9 @@ public class PlayerMoveControl : MonoBehaviour {
         }
     }
 
+
+    
+   
 
     private void OnTriggerEnter(Collider other)
     {
