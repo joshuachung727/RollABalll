@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class eventScript : MonoBehaviour
 {
-
+	CursorLockMode want;
     // Use this for initialization
     void Start()
     {
-        Cursor.visible = false;
+		Cursor.lockState =CursorLockMode.Locked;
 
     }
 

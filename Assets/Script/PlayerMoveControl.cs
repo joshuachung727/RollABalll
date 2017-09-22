@@ -51,7 +51,7 @@ public class PlayerMoveControl : MonoBehaviour {
 			rb.velocity *= 1 - slowValue / 100;
 		}
 		if (Input.GetKey (KeyCode.LeftShift)) {
-			speed = Initialspeed*2;
+			speed = Initialspeed*6;
 		} else {
 			speed = Initialspeed;
 		}
@@ -71,7 +71,7 @@ public class PlayerMoveControl : MonoBehaviour {
         Vector3 cameraVec = new Vector3(Camera.transform.forward.x,0, Camera.transform.forward.z);
         Vector3 movement = Camera.transform.forward * moveVertical     +   Vector3.Cross(cameraVec, Vector3.up).normalized*moveHorizontal*0.8f;
         
-        print(speed);
+        
         rb.AddForce(movement * speed);
 
         if (Input.GetKeyDown("f"))
