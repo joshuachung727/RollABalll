@@ -9,7 +9,7 @@ public class PlayerMoveControl : MonoBehaviour {
 	public float thrustSpeed=2.5f;
     public Text countText;
     public GameObject Camera;
-
+    public float dashSpeed = 5f;
 
 	public bool big=true;
 	public Text winText;
@@ -30,7 +30,7 @@ public class PlayerMoveControl : MonoBehaviour {
         count = 0;
 		winText.text = "";
 		SetCountText ();
-        
+      
 
     }
 
@@ -77,13 +77,19 @@ public class PlayerMoveControl : MonoBehaviour {
         if (Input.GetKeyDown("f"))
         {
             rb.velocity = Vector3.zero;
-            print("thrust");
-            rb.AddForce(Camera.transform.forward*thrustSpeed*1000);
+            rb.useGravity = false;
+            Invoke("setGravity",1f);
+            rb.AddForce(Camera.transform.forward*dashSpeed*1000);
+
 
         }
     }
 
-
+    void setGravity()
+    {
+        rb.useGravity = true;
+        
+    }
     
    
 
