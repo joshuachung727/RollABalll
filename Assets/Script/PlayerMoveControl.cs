@@ -11,10 +11,11 @@ public class PlayerMoveControl : MonoBehaviour {
     public GameObject Camera;
     public float dashSpeed = 5f;
 
+
 	public bool big=true;
 	public Text winText;
 	public float ballScale = 1;
-
+	private bool gravityStatus = true;
   
     private Rigidbody rb;
     private int count;
@@ -47,16 +48,17 @@ public class PlayerMoveControl : MonoBehaviour {
         if (Input.GetKey("c"))
 			rb.AddForce(-Vector3.up * 2*thrustSpeed, ForceMode.Impulse);
 
-		if (rb.velocity != Vector3.zero) {
-			rb.velocity *= 1 - slowValue / 100;
-		}
+		slowDown();
+
 		if (Input.GetKey (KeyCode.LeftShift)) {
 			speed = Initialspeed*6;
 		} else {
 			speed = Initialspeed;
 		}
 
-       
+		if (Input.GetKey ("e")) {
+			rb.AddTorque (Vector3.up*10000);
+		}
 
         
 
@@ -64,9 +66,13 @@ public class PlayerMoveControl : MonoBehaviour {
 
 
         float moveHorizontal = -Input.GetAxis("Horizontal");
-       
 		float moveVertical = Input.GetAxis("Vertical");
+		if (moveVertical != 0 || moveHorizontal != 0) {
+			gravityStatus = false;
 
+		} else {
+			gravityStatus = true;
+		}
         //  Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
         Vector3 cameraVec = new Vector3(Camera.transform.forward.x,0, Camera.transform.forward.z);
         Vector3 movement = Camera.transform.forward * moveVertical     +   Vector3.Cross(cameraVec, Vector3.up).normalized*moveHorizontal*0.8f;
@@ -80,14 +86,24 @@ public class PlayerMoveControl : MonoBehaviour {
             rb.useGravity = false;
             Invoke("setGravity",1f);
             rb.AddForce(Camera.transform.forward*dashSpeed*1000);
-
-
         }
+		rb.useGravity = gravityStatus;
+
     }
+	void slowDown(){
+		if (rb.velocity != Vector3.zero) {
+		//	Vector3 rbVel = rb.velocity;
+			//rb.velocity.Set((float)  rbVel.x *( 1-slowValue/100) , rbVel.y, (float)rbVel.z*( 1-slowValue/100));
+			rb.velocity *= 1 - slowValue / 100;
+		}
+	}
 
     void setGravity()
     {
-        rb.useGravity = true;
+		if (gravityStatus) {
+			rb.useGravity = true;
+		}
+        
         
     }
     
