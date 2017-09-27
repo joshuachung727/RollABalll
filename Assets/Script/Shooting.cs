@@ -6,8 +6,11 @@ public class Shooting : MonoBehaviour {
 	public int damagePerShot = 20;
 	public float timeBetweenBullets = 0.15f;
 	public float range = 100f;
+	public Camera cam;
 	public GameObject Camera;
+	public GameObject player;
 
+	PlayerMoveControl playerScript;
 	bool audioPlaying=false;
 	float timer;
 	Ray shootRay = new Ray();
@@ -26,8 +29,11 @@ public class Shooting : MonoBehaviour {
 		gunAudio = GetComponent<AudioSource> ();
 		gunLight = GetComponent<Light> ();
 		gunAudio.Play ();
+		gunAudio.Pause ();
+		cam = Camera.GetComponent<Camera> ();
+		playerScript = player.GetComponent<PlayerMoveControl> ();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		timer += Time.deltaTime;
@@ -36,7 +42,11 @@ public class Shooting : MonoBehaviour {
 		{
 			Shoot ();
 		}
-
+		if (Input.GetButton ("Fire1")) {
+			gunAudio.UnPause ();
+		} else {
+			gunAudio.Pause ();
+		}
 
 
 		if(timer >= timeBetweenBullets * effectsDisplayTime)
@@ -58,7 +68,7 @@ public class Shooting : MonoBehaviour {
 	}
 
 	void pauseAudio(){
-		gunAudio.Pause ();
+		//gunAudio.Pause ();
 		audioPlaying = false;
 	}
 
@@ -66,7 +76,7 @@ public class Shooting : MonoBehaviour {
 	{
 		timer = 0f;
 
-		gunAudio.UnPause();
+		//gunAudio.UnPause();
 
 		gunLight.enabled = true;
 
@@ -76,8 +86,9 @@ public class Shooting : MonoBehaviour {
 		gunLine.enabled = true;
 		gunLine.SetPosition (0, transform.position+Vector3.left*2);
 
-		shootRay.origin = transform.position;
-		shootRay.direction = Camera.transform.forward;
+		//shootRay.origin = transform.position;
+		shootRay=cam.ViewportPointToRay(new Vector3(0.5f,0.5f,0));
+		//shootRay.direction = Camera.transform.forward;
 
 		if(Physics.Raycast (shootRay, out shootHit, range))
 		{
@@ -86,6 +97,7 @@ public class Shooting : MonoBehaviour {
 			gunLine.SetPosition (1, shootHit.point);
 			if (shootHit.collider.gameObject.CompareTag ( "pickUps")) {
 				Destroy (shootHit.collider.gameObject);
+				playerScript.addScore ();
 			}
 		}
 		else

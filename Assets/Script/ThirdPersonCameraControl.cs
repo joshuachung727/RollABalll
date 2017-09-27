@@ -9,11 +9,13 @@ public class ThirdPersonCameraControl : MonoBehaviour {
 	public float speedH=2f;
 	public float speedV = 2f;
 
+
 	private float yaw=0f;
 	private float pitch =0f;
 	private Vector3 offset;
 	// Use this for initialization
 	void Start () {
+
 		offset = transform.position - player.transform.position;
 	}
 	
@@ -24,6 +26,11 @@ public class ThirdPersonCameraControl : MonoBehaviour {
 		pitch -= speedV * Input.GetAxis ("Mouse Y");
 		
 		transform.position = player.transform.position + offset;
-		transform.eulerAngles = new Vector3 (pitch, yaw, 0f);
+
+			transform.eulerAngles = new Vector3 (pitch, yaw, 0f);
+
+
 	}
+
+
 }

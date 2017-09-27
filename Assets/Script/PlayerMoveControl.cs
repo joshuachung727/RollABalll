@@ -113,8 +113,8 @@ public class PlayerMoveControl : MonoBehaviour {
     {
         if (other.gameObject.CompareTag ( "pickUps"))
         {
-            count++;
-			SetCountText ();
+          
+			addScore ();
             other.gameObject.SetActive(false);
 
         }
@@ -124,5 +124,9 @@ public class PlayerMoveControl : MonoBehaviour {
 		if (count >= 12) {
 			winText.text = "You Win!";
 		}
+	}
+	public void addScore(){
+		count++;
+		SetCountText ();
 	}
 }

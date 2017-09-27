@@ -34,8 +34,8 @@ public class Rotator : MonoBehaviour {
 	}
 
 	void changeLight(){
-		Color coll=new Color();
-		coll = Color.yellow;
+		//Color coll=new Color((float)Random.Range(0,100)/100,(float)Random.Range(0,100)/100,(float)Random.Range(0,100)/100); 
+		Color coll=new Color(0.5f,0.5f,0.5f); 
 		lt.color = coll;
 
 	}
